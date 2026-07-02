@@ -1,44 +1,53 @@
 body{
   margin:0;
   font-family:system-ui;
-  background:radial-gradient(circle at top,#ff9a1f,#ff3b00 60%,#0b0b0b);
-  color:white;
+  background:#0b0f1a;
+  color:#fff;
 }
 
-/* HEADER */
+/* =========================
+   TOP HEADER（分析UI化）
+========================= */
+
 header{
-  padding:18px;
-  text-align:center;
+  padding:22px;
   font-weight:900;
-  letter-spacing:2px;
-  background:rgba(0,0,0,0.35);
-  backdrop-filter: blur(10px);
+  font-size:22px;
+  letter-spacing:1px;
+  background:linear-gradient(90deg,#ff7a18,#ff2d00);
 }
 
-/* NAV */
+/* =========================
+   NAV（ダッシュボードタブ）
+========================= */
+
 nav{
   display:flex;
-  gap:6px;
   padding:10px;
+  gap:8px;
 }
 
 nav button{
   flex:1;
   padding:14px;
-  border:0;
   border-radius:14px;
+  border:0;
   font-weight:800;
-  color:white;
-  background:rgba(255,255,255,0.08);
-  transition:0.2s;
+  background:#151c2e;
+  color:#fff;
+  transition:.2s;
 }
 
-nav button:active{
-  transform:scale(0.95);
-  background:rgba(255,140,0,0.4);
+nav button.active{
+  background:#ff7a18;
+  color:#111;
+  transform:scale(1.03);
 }
 
-/* PAGE */
+/* =========================
+   DASHBOARD LAYOUT
+========================= */
+
 .page{
   display:none;
   padding:14px;
@@ -48,61 +57,175 @@ nav button:active{
   display:block;
 }
 
-/* CARD（重要） */
+/* =========================
+   KPIカード（最重要）
+========================= */
+
+.kpiGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.kpi{
+  background:#121a2b;
+  border-radius:16px;
+  padding:14px;
+  text-align:center;
+  border:1px solid #26324a;
+}
+
+.kpiValue{
+  font-size:26px;
+  font-weight:900;
+  color:#ffb347;
+}
+
+.kpiLabel{
+  font-size:12px;
+  color:#aaa;
+  margin-top:4px;
+}
+
+/* =========================
+   メインカード（分析単位）
+========================= */
+
 .card{
-  background:linear-gradient(145deg,rgba(0,0,0,0.85),rgba(30,30,30,0.6));
-  border:1px solid rgba(255,140,0,0.2);
+  background:#111827;
   border-radius:18px;
   padding:16px;
   margin:12px 0;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  border-left:4px solid #ff7a18;
+  box-shadow:0 8px 20px rgba(0,0,0,.4);
 }
 
-/* ITEM LIST */
+/* 成功・失敗の視覚化 */
+.card.win{
+  border-left-color:#22c55e;
+}
+
+.card.lose{
+  border-left-color:#ef4444;
+}
+
+/* =========================
+   戦績リスト
+========================= */
+
 .item{
-  background:rgba(0,0,0,0.6);
+  background:#0f172a;
   padding:14px;
-  margin:10px 0;
   border-radius:14px;
-  border-left:4px solid orange;
-  transition:0.2s;
+  margin:8px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border:1px solid #1e293b;
 }
 
 .item:active{
   transform:scale(0.98);
-  background:rgba(255,120,0,0.15);
 }
 
-/* INPUT */
-input,select,button{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
+/* =========================
+   強調数値（超重要）
+========================= */
+
+.bigNumber{
+  font-size:34px;
+  font-weight:900;
+  color:#ffb347;
+}
+
+/* =========================
+   フィルタバー（重要）
+========================= */
+
+.filterBar{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.filterBar input,
+.filterBar select{
+  flex:1;
+  padding:10px;
   border-radius:12px;
   border:0;
-  background:rgba(255,255,255,0.08);
-  color:white;
+  background:#121a2b;
+  color:#fff;
 }
 
-/* DETAIL */
+/* =========================
+   グラフ
+========================= */
+
+canvas{
+  width:100%;
+  background:#0f172a;
+  border-radius:16px;
+  padding:10px;
+}
+
+/* =========================
+   詳細モーダル
+========================= */
+
 #detail{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.95);
+  background:rgba(0,0,0,.95);
   padding:18px;
   display:none;
   overflow:auto;
 }
 
-/* GRAPH */
-canvas{
-  width:100%;
-  margin-top:12px;
-  border-radius:14px;
-  background:rgba(255,255,255,0.05);
+/* =========================
+   ステータスバッジ
+========================= */
+
+.badge{
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
 }
 
-/* HIGHLIGHT NUMBERS */
-b{
-  color:#ffb347;
+.badge.good{
+  background:#22c55e;
+}
+
+.badge.bad{
+  background:#ef4444;
+}
+
+.badge.mid{
+  background:#f59e0b;
+}
+
+/* =========================
+   アニメーション最小・上品系
+========================= */
+
+.card,
+.item{
+  transition:.15s;
+}
+
+.card:hover,
+.item:hover{
+  transform:translateY(-2px);
+}
+
+/* =========================
+   スマホ最適化
+========================= */
+
+@media(max-width:700px){
+  .kpiGrid{
+    grid-template-columns:1fr;
+  }
 }
