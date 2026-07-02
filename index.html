@@ -3,26 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salmon Run Log</title>
+<title>Salmon Run Tracker</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="header">🐟 SALMON RUN LOG</div>
-
-<div class="tabs">
-  <button onclick="tab(0)">入力</button>
-  <button onclick="tab(1)">戦績</button>
-  <button onclick="tab(2)">分析</button>
+<div class="nav">
+  <button onclick="go(0)">入力</button>
+  <button onclick="go(1)">戦績</button>
+  <button onclick="go(2)">分析</button>
 </div>
 
-<div class="page active" id="p0"></div>
-<div class="page" id="p1"></div>
-<div class="page" id="p2"></div>
+<div id="p0" class="page active"></div>
+<div id="p1" class="page"></div>
+<div id="p2" class="page"></div>
 
-<div id="detail" class="detail"></div>
+<div id="detail"></div>
 
-<script src="data.js"></script>
+<script src="store.js"></script>
 <script src="app.js"></script>
 
 </body>
