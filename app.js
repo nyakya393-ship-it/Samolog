@@ -1,32 +1,44 @@
-function save(){
-  localStorage.setItem("sr",JSON.stringify(data));
-}
+import {load,save} from "./store.js";
 
-function tab(i){
+let data = load();
+
+/* ---------------- UI切替 ---------------- */
+window.go = (i)=>{
   document.querySelectorAll(".page").forEach((p,idx)=>{
     p.classList.toggle("active",idx===i);
   });
   render();
-}
+};
 
-/* --- 入力UI --- */
+/* ---------------- 定義 ---------------- */
+const weapons = ["わかば","スシ","ローラー","チャージャー","ブラスター","シェルター"];
+const specials = ["トルネード","ナイスダマ","ジェッパ","カニ","サメ","メガホン"];
+const stages = ["アラマキ砦","ムニエール","シェケナダム","すじこ","トキシラズ","ブラコ"];
+
+/* ---------------- 入力UI ---------------- */
 document.getElementById("p0").innerHTML = `
 <div class="card">
+
+<h3>ステージ</h3>
+<select id="stage">
+${stages.map(s=>`<option>${s}</option>`).join("")}
+</select>
 
 <h3>結果</h3>
 <select id="result">
 <option>成功</option>
-<option>成功（オカシラ成功）</option>
-<option>成功（オカシラ失敗）</option>
-<option>失敗（wave1）</option>
-<option>失敗（wave2）</option>
-<option>失敗（wave3）</option>
-<option>失敗（wave4）</option>
-<option>失敗（wave5）</option>
+<option>成功(オカシラ成功)</option>
+<option>成功(オカシラ失敗)</option>
+<option>失敗(wave1)</option>
+<option>失敗(wave2)</option>
+<option>失敗(wave3)</option>
+<option>失敗(wave4)</option>
+<option>失敗(wave5)</option>
 </select>
 
-<h3>ブキ（6）</h3>
+<h3>WAVEブキ</h3>
 ${[1,2,3,4,5,6].map(i=>`
+<label>WAVE${i}</label>
 <select id="w${i}">
 ${weapons.map(w=>`<option>${w}</option>`).join("")}
 </select>
@@ -38,97 +50,89 @@ ${specials.map(s=>`<option>${s}</option>`).join("")}
 </select>
 
 <h3>イクラ</h3>
-<input id="gm" placeholder="金(個人)">
-<input id="ga" placeholder="金(アシスト)">
-<input id="rm" placeholder="赤(個人)">
+<input id="gold" placeholder="金(個人)">
+<input id="goldA" placeholder="金(アシスト)">
+<input id="red" placeholder="赤(個人)">
 
 <button onclick="add()">保存</button>
 
 </div>
 `;
 
-function add(){
-
-  let ws=[1,2,3,4,5,6].map(i=>document.getElementById("w"+i).value);
-
+/* ---------------- 保存 ---------------- */
+window.add = ()=>{
   data.push({
+    stage:stage.value,
     result:result.value,
-    weapons:ws,
+    weapons:[w1.value,w2.value,w3.value,w4.value,w5.value,w6.value],
     special:sp.value,
-    goldMe:+gm.value||0,
-    goldAssist:+ga.value||0,
-    redMe:+rm.value||0
+    gold:+gold.value||0,
+    goldA:+goldA.value||0,
+    red:+red.value||0,
+    time:Date.now()
   });
 
-  save();
+  save(data);
   render();
-}
+};
 
-/* --- 詳細 --- */
-function openDetail(i){
-  let d=data[i];
-
-  detail.style.display="block";
+/* ---------------- 詳細 ---------------- */
+window.openDetail = (i)=>{
+  const d=data[i];
 
   detail.innerHTML=`
-    <button onclick="detail.style.display='none'">← 戻る</button>
+    <div class="card">
+      <h2>${d.stage}</h2>
+      <p>${d.result}</p>
 
-    <h2>${d.result}</h2>
+      <p>${d.weapons.map((w,i)=>`W${i+1}:${w}`).join("<br>")}</p>
 
-    <p>ブキ：${d.weapons.join(", ")}</p>
-    <p>スペシャル：${d.special}</p>
-    <p>金(個人)：${d.goldMe}</p>
-    <p>金(アシスト)：${d.goldAssist}</p>
-    <p>赤：${d.redMe}</p>
+      <p>SP:${d.special}</p>
+      <p>金:${d.gold}</p>
+      <p>金A:${d.goldA}</p>
+      <p>赤:${d.red}</p>
 
-    <button onclick="del(${i})">🗑 削除</button>
+      <button onclick="del(${i})">削除</button>
+    </div>
   `;
-}
+};
 
-function del(i){
-  if(confirm("削除する？")){
-    data.splice(i,1);
-    save();
-    detail.style.display="none";
-    render();
-  }
-}
+/* ---------------- 削除 ---------------- */
+window.del = (i)=>{
+  data.splice(i,1);
+  save(data);
+  render();
+};
 
-/* --- 戦績 --- */
+/* ---------------- 描画 ---------------- */
 function render(){
 
   document.getElementById("p1").innerHTML =
     data.map((d,i)=>`
       <div class="item" onclick="openDetail(${i})">
-        ${d.result}<br>
-        ${d.special}
+        ${d.stage} / ${d.result}
       </div>
-    `).join("")
+    `).join("");
 
-  || "なし";
+  const avg = (key)=>data.reduce((a,b)=>a+(b[key]||0),0)/(data.length||1);
 
-  /* --- 分析 --- */
-  let gm=data.reduce((a,b)=>a+b.goldMe,0)/(data.length||1);
-  let ga=data.reduce((a,b)=>a+b.goldAssist,0)/(data.length||1);
-  let rm=data.reduce((a,b)=>a+b.redMe,0)/(data.length||1);
-
-  let sp={};
+  const sp={};
   data.forEach(d=>{
-    if(!sp[d.special])sp[d.special]={s:0,t:0};
+    if(!sp[d.special]) sp[d.special]={t:0,s:0};
     sp[d.special].t++;
-    if(d.result.includes("成功"))sp[d.special].s++;
+    if(d.result.includes("成功")) sp[d.special].s++;
   });
 
   document.getElementById("p2").innerHTML=`
     <div class="card">
-      平均金(個人)：${gm.toFixed(1)}<br>
-      平均金(アシスト)：${ga.toFixed(1)}<br>
-      平均赤(個人)：${rm.toFixed(1)}<br><br>
+      金平均:${avg("gold").toFixed(1)}<br>
+      金A平均:${avg("goldA").toFixed(1)}<br>
+      赤平均:${avg("red").toFixed(1)}<br><br>
 
-      <b>スペシャル成功率</b><br>
-      ${Object.keys(sp).map(k=>{
-        return `${k}: ${(sp[k].s/sp[k].t*100).toFixed(1)}%`;
-      }).join("<br>")}
+      <b>SP成功率</b><br>
+      ${Object.entries(sp).map(([k,v])=>
+        `${k}: ${(v.s/v.t*100).toFixed(1)}%`
+      ).join("<br>")}
     </div>
   `;
 }
