@@ -1,62 +1,67 @@
 body{
   margin:0;
-  font-family: system-ui;
-  background: radial-gradient(circle at top,#ff8a00,#ff5e00);
+  font-family:system-ui;
+  background:linear-gradient(135deg,#ff8a00,#ff2d00);
   color:#111;
 }
 
-/* 上部ナビ */
-.nav{
-  display:flex;
-  position:sticky;
-  top:0;
-  background:rgba(0,0,0,0.2);
-  backdrop-filter: blur(10px);
+header{
+  text-align:center;
+  padding:14px;
+  font-weight:bold;
+  color:white;
+  background:rgba(0,0,0,0.25);
 }
 
-.nav button{
+nav{display:flex;}
+nav button{
   flex:1;
-  padding:14px;
+  padding:12px;
   border:0;
   font-weight:bold;
-  background:none;
-  color:white;
+  background:rgba(255,255,255,0.25);
 }
 
-/* ページ */
 .page{display:none;padding:12px;}
 .page.active{display:block;}
 
-/* カード */
 .card{
-  background:rgba(0,0,0,0.75);
+  background:rgba(0,0,0,0.8);
   color:white;
   padding:14px;
   border-radius:16px;
   margin:10px 0;
 }
 
-/* 入力 */
-input,select,button{
-  width:100%;
-  padding:12px;
-  margin:6px 0;
-  border-radius:10px;
-  border:0;
-  font-size:14px;
-}
-
-button{
-  background:#111;
-  color:white;
-  font-weight:bold;
-}
-
-/* リスト */
 .item{
-  background:rgba(0,0,0,0.7);
+  background:rgba(0,0,0,0.75);
   color:white;
   padding:12px;
   margin:8px 0;
+  border-radius:12px;
+}
+
+input,select,button{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:10px;
+  border:0;
+}
+
+#detail{
+  position:fixed;
+  inset:0;
+  background:#111;
+  color:white;
+  padding:16px;
+  display:none;
+  overflow:auto;
+}
+
+canvas{
+  width:100%;
+  margin-top:10px;
+  background:rgba(255,255,255,0.1);
   border-radius:12px;
 }
