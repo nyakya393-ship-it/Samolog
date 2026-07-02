@@ -1,67 +1,108 @@
 body{
   margin:0;
   font-family:system-ui;
-  background:linear-gradient(135deg,#ff8a00,#ff2d00);
-  color:#111;
-}
-
-header{
-  text-align:center;
-  padding:14px;
-  font-weight:bold;
+  background:radial-gradient(circle at top,#ff9a1f,#ff3b00 60%,#0b0b0b);
   color:white;
-  background:rgba(0,0,0,0.25);
 }
 
-nav{display:flex;}
+/* HEADER */
+header{
+  padding:18px;
+  text-align:center;
+  font-weight:900;
+  letter-spacing:2px;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+}
+
+/* NAV */
+nav{
+  display:flex;
+  gap:6px;
+  padding:10px;
+}
+
 nav button{
   flex:1;
-  padding:12px;
-  border:0;
-  font-weight:bold;
-  background:rgba(255,255,255,0.25);
-}
-
-.page{display:none;padding:12px;}
-.page.active{display:block;}
-
-.card{
-  background:rgba(0,0,0,0.85);
-  color:white;
   padding:14px;
-  border-radius:16px;
-  margin:10px 0;
+  border:0;
+  border-radius:14px;
+  font-weight:800;
+  color:white;
+  background:rgba(255,255,255,0.08);
+  transition:0.2s;
 }
 
+nav button:active{
+  transform:scale(0.95);
+  background:rgba(255,140,0,0.4);
+}
+
+/* PAGE */
+.page{
+  display:none;
+  padding:14px;
+}
+
+.page.active{
+  display:block;
+}
+
+/* CARD（重要） */
+.card{
+  background:linear-gradient(145deg,rgba(0,0,0,0.85),rgba(30,30,30,0.6));
+  border:1px solid rgba(255,140,0,0.2);
+  border-radius:18px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* ITEM LIST */
 .item{
-  background:rgba(0,0,0,0.75);
-  color:white;
+  background:rgba(0,0,0,0.6);
+  padding:14px;
+  margin:10px 0;
+  border-radius:14px;
+  border-left:4px solid orange;
+  transition:0.2s;
+}
+
+.item:active{
+  transform:scale(0.98);
+  background:rgba(255,120,0,0.15);
+}
+
+/* INPUT */
+input,select,button{
+  width:100%;
   padding:12px;
   margin:8px 0;
   border-radius:12px;
-}
-
-input,select,button{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-  border-radius:10px;
   border:0;
+  background:rgba(255,255,255,0.08);
+  color:white;
 }
 
+/* DETAIL */
 #detail{
   position:fixed;
   inset:0;
-  background:#111;
-  color:white;
-  padding:16px;
+  background:rgba(0,0,0,0.95);
+  padding:18px;
   display:none;
   overflow:auto;
 }
 
+/* GRAPH */
 canvas{
   width:100%;
-  background:rgba(255,255,255,0.08);
-  border-radius:12px;
-  margin-top:10px;
+  margin-top:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.05);
+}
+
+/* HIGHLIGHT NUMBERS */
+b{
+  color:#ffb347;
 }
