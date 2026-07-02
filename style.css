@@ -1,48 +1,76 @@
 body{
   margin:0;
-  font-family:sans-serif;
-  background:#0b0f14;
-  color:white;
+  font-family: sans-serif;
+  background: linear-gradient(135deg,#ff7a18,#ffb347);
+  color:#111;
 }
 
-.tabbar{
-  display:flex;
-  position:sticky;
-  top:0;
-  background:#111827;
-}
-
-button{
-  flex:1;
+/* ヘッダー */
+.header{
+  text-align:center;
+  font-weight:bold;
   padding:14px;
+  background:rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* タブ */
+.tabs{
+  display:flex;
+}
+
+.tabs button{
+  flex:1;
+  padding:12px;
   border:none;
-  background:#111827;
-  color:white;
+  font-weight:bold;
+  background:rgba(255,255,255,0.3);
 }
 
-button:active{
-  background:#222b3a;
-}
-
+/* ページ */
 .page{display:none;padding:12px;}
 .page.active{display:block;}
 
+/* カード（インク風） */
 .card{
-  background:#1c2433;
+  background:rgba(0,0,0,0.75);
+  color:white;
   padding:12px;
-  border-radius:12px;
+  border-radius:16px;
   margin:10px 0;
 }
 
-input,select{
+/* 入力 */
+select,input,button{
   width:100%;
   padding:10px;
-  margin:5px 0;
+  margin:6px 0;
+  border-radius:10px;
+  border:none;
 }
 
+button{
+  background:#111;
+  color:#fff;
+  font-weight:bold;
+}
+
+/* 戦績 */
 .item{
-  background:#263042;
-  margin:6px 0;
+  background:rgba(0,0,0,0.7);
+  color:white;
   padding:10px;
-  border-radius:10px;
+  margin:8px 0;
+  border-radius:12px;
+}
+
+/* 詳細 */
+.detail{
+  position:fixed;
+  inset:0;
+  background:#111;
+  color:white;
+  padding:16px;
+  display:none;
+  overflow:auto;
 }
