@@ -3,16 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salmon Run Tracker</title>
+<title>SR Log PRO</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="nav">
-  <button onclick="go(0)">入力</button>
-  <button onclick="go(1)">戦績</button>
-  <button onclick="go(2)">分析</button>
-</div>
+<header>🐟 Salmon Run Log PRO</header>
+
+<nav>
+<button onclick="go(0)">入力</button>
+<button onclick="go(1)">戦績</button>
+<button onclick="go(2)">分析</button>
+</nav>
 
 <div id="p0" class="page active"></div>
 <div id="p1" class="page"></div>
@@ -20,7 +22,6 @@
 
 <div id="detail"></div>
 
-<script src="store.js"></script>
 <script src="app.js"></script>
 
 </body>
