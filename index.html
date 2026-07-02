@@ -2,210 +2,34 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>サーモンラン完全戦績</title>
-
-<style>
-body{
-    font-family:sans-serif;
-    background:#0d0f14;
-    color:#fff;
-    padding:16px;
-}
-
-h1{color:#ffcc00;}
-
-.card{
-    background:#1c1f2a;
-    padding:12px;
-    margin:10px 0;
-    border-radius:12px;
-}
-
-input, select, button{
-    margin:4px;
-    padding:6px;
-}
-
-button{cursor:pointer;}
-
-.item{
-    background:#2a2f3d;
-    padding:8px;
-    margin:6px 0;
-    border-radius:8px;
-}
-
-.good{color:#00ff99;}
-.bad{color:#ff6666;}
-
-#detailView{
-    display:none;
-    position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
-    background:#0d0f14;
-    padding:20px;
-    overflow:auto;
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サーモンラン戦績</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<h1>🐟 サーモンラン完全戦績</h1>
-
-<div class="card">
-<h2>① 入力</h2>
-
-<select id="result">
-  <option>成功</option>
-  <option>成功（オカシラ成功）</option>
-  <option>成功（オカシラ失敗）</option>
-  <option>失敗（wave1）</option>
-  <option>失敗（wave2）</option>
-  <option>失敗（wave3）</option>
-  <option>失敗（wave4）</option>
-  <option>失敗（wave5）</option>
-</select>
-
-<input id="weapons" placeholder="ブキ1〜6">
-<input id="special" placeholder="スペシャル">
-
-<input id="goldAll" type="number" placeholder="金イクラ(全体)">
-<input id="redAll" type="number" placeholder="赤イクラ(全体)">
-
-<input id="goldMe" type="number" placeholder="金イクラ(個人)">
-<input id="goldAssist" type="number" placeholder="金イクラ(アシスト)">
-<input id="redMe" type="number" placeholder="赤イクラ(個人)">
-
-<button onclick="add()">追加</button>
+<div class="tabbar">
+  <button onclick="tab(0)">入力</button>
+  <button onclick="tab(1)">戦績</button>
+  <button onclick="tab(2)">分析</button>
 </div>
 
-<div class="card">
-<h2>② 戦績</h2>
-<div id="list"></div>
+<div id="page0" class="page active">
+  <div id="input"></div>
 </div>
 
-<div class="card">
-<h2>③ 分析</h2>
-<div id="analysis"></div>
+<div id="page1" class="page">
+  <div id="list"></div>
 </div>
 
-<!-- 詳細画面 -->
-<div id="detailView">
-<button onclick="closeDetail()">← 戻る</button>
-<div id="detail"></div>
+<div id="page2" class="page">
+  <div id="analysis"></div>
 </div>
 
-<script>
+<div id="detail" class="detail"></div>
 
-let data = JSON.parse(localStorage.getItem("sr") || "[]");
-
-function save(){
-    localStorage.setItem("sr", JSON.stringify(data));
-}
-
-function add(){
-
-    data.push({
-        result: result.value,
-        weapons: weapons.value,
-        special: special.value,
-        goldAll: +goldAll.value||0,
-        redAll: +redAll.value||0,
-        goldMe: +goldMe.value||0,
-        goldAssist: +goldAssist.value||0,
-        redMe: +redMe.value||0
-    });
-
-    save();
-    render();
-}
-
-function showDetail(i){
-    let d = data[i];
-
-    detail.innerHTML = `
-        <h2>詳細</h2>
-        <p>結果：${d.result}</p>
-        <p>ブキ：${d.weapons}</p>
-        <p>スペシャル：${d.special}</p>
-        <p>金イクラ(全体)：${d.goldAll}</p>
-        <p>赤イクラ(全体)：${d.redAll}</p>
-        <p>金イクラ(個人)：${d.goldMe}</p>
-        <p>金イクラ(アシスト)：${d.goldAssist}</p>
-        <p>赤イクラ(個人)：${d.redMe}</p>
-        <button onclick="del(${i})">削除</button>
-    `;
-
-    detailView.style.display="block";
-}
-
-function closeDetail(){
-    detailView.style.display="none";
-}
-
-function del(i){
-    if(confirm("削除する？")){
-        data.splice(i,1);
-        save();
-        render();
-        closeDetail();
-    }
-}
-
-function render(){
-
-    list.innerHTML = data.map((d,i)=>`
-        <div class="item" onclick="showDetail(${i})">
-            ${d.result}<br>
-            ${d.weapons} / ${d.special}
-        </div>
-    `).join("");
-
-    // ---- 分析 ----
-
-    let goldMeAvg =
-        data.reduce((a,b)=>a+b.goldMe,0)/(data.length||1);
-
-    let goldAssistAvg =
-        data.reduce((a,b)=>a+b.goldAssist,0)/(data.length||1);
-
-    let redMeAvg =
-        data.reduce((a,b)=>a+b.redMe,0)/(data.length||1);
-
-    let success = data.filter(d=>d.result.includes("成功")).length;
-    let waveFail = data.filter(d=>d.result.includes("wave")).length;
-
-    let sp = {};
-    data.forEach(d=>{
-        if(!sp[d.special]) sp[d.special]={s:0,t:0};
-        sp[d.special].t++;
-        if(d.result.includes("成功")) sp[d.special].s++;
-    });
-
-    let spRank =
-        Object.keys(sp).map(k=>{
-            let r = (sp[k].s/sp[k].t*100).toFixed(1);
-            return `${k}：${r}%`;
-        }).join("<br>");
-
-    analysis.innerHTML = `
-        平均金イクラ(個人)：${goldMeAvg.toFixed(1)}<br>
-        平均金イクラ(アシスト)：${goldAssistAvg.toFixed(1)}<br>
-        平均赤イクラ(個人)：${redMeAvg.toFixed(1)}<br><br>
-
-        成功回数：${success}<br>
-        失敗回数：${waveFail}<br><br>
-
-        <b>スペシャル成功率</b><br>
-        ${spRank || "なし"}
-    `;
-}
-
-render();
-
-</script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
