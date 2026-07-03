@@ -3,22 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>InkLog PRO MAX</title>
+<title>Samolog PRO</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>🐟 InkLog PRO MAX</header>
+<div id="bgInk"></div>
 
-<nav>
-<button onclick="go(0)">入力</button>
-<button onclick="go(1)">戦績</button>
-<button onclick="go(2)">分析</button>
-</nav>
+<header>
+  <div class="logo">
+    <div class="logoMain">Samolog</div>
+    <div class="logoSub">SALMON RUN ANALYTICS</div>
+  </div>
+</header>
 
-<div id="p0" class="page active"></div>
+<div class="tabs">
+  <button class="tab active" onclick="go(0)">入力</button>
+  <button class="tab" onclick="go(1)">戦績</button>
+  <button class="tab" onclick="go(2)">分析</button>
+</div>
+
+<!-- INPUT -->
+<div id="p0" class="page active">
+  <div class="card">
+
+    <h2>入力</h2>
+
+    <select id="stage">
+      <option>アラマキ砦</option>
+      <option>ムニ・エール</option>
+      <option>シェケナダム</option>
+      <option>すじこジャンクション</option>
+      <option>トキシラズ</option>
+      <option>ドン・ブラコ</option>
+    </select>
+
+    <select id="result">
+      <option>成功</option>
+      <option>成功(オカシラ成功)</option>
+      <option>成功(オカシラ失敗)</option>
+      <option>失敗(wave1)</option>
+      <option>失敗(wave2)</option>
+      <option>失敗(wave3)</option>
+      <option>失敗(wave4)</option>
+      <option>失敗(wave5)</option>
+    </select>
+
+    <select id="special">
+      <option>トルネード</option>
+      <option>ナイスダマ</option>
+      <option>ジェッパ</option>
+      <option>カニ</option>
+      <option>サメ</option>
+      <option>メガホン</option>
+    </select>
+
+    <input id="gold" placeholder="金イクラ">
+    <input id="goldA" placeholder="金イクラ(アシスト)">
+    <input id="red" placeholder="赤イクラ">
+
+    <button id="saveButton" onclick="add()">保存</button>
+
+  </div>
+</div>
+
+<!-- BATTLE -->
 <div id="p1" class="page"></div>
-<div id="p2" class="page"></div>
+
+<!-- ANALYSIS -->
+<div id="p2" class="page">
+
+  <div class="card">
+    <h2>分析</h2>
+
+    <div class="statGrid">
+
+      <div class="statBox">
+        <div class="statValue" id="avgGold">0</div>
+        <div class="statLabel">平均金イクラ</div>
+      </div>
+
+      <div class="statBox">
+        <div class="statValue" id="avgAssist">0</div>
+        <div class="statLabel">平均アシスト</div>
+      </div>
+
+      <div class="statBox">
+        <div class="statValue" id="avgRed">0</div>
+        <div class="statLabel">平均赤イクラ</div>
+      </div>
+
+      <div class="statBox">
+        <div class="statValue" id="winRate">0%</div>
+        <div class="statLabel">成功率</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 <div id="detail"></div>
 
